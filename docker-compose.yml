@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - app-network
+    ports:
+      - "80:80"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/MEANStackDB
+      - PORT=80
+    restart: always
+
+  mongo:
+    image: mongo:3.6
+    networks:
+      - app-network
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+    attach: false
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
